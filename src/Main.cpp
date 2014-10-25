@@ -3,7 +3,6 @@
 #include <set>
 #include <fstream>
 #include <cstring>
-//#include <stdio.h>
 #include <algorithm>
 
 using namespace std;
@@ -28,6 +27,9 @@ int main()
 
 void CheckWords(Dictionary inDick )
 {
+    int badwordcount = 0;
+    int goodwordcount = 0;
+
     string filename;
     bool goodfilename = false;
     while (!goodfilename)
@@ -50,12 +52,18 @@ void CheckWords(Dictionary inDick )
         {
             inWord.erase(remove(inWord.begin(), inWord.end(), badchars[i]), inWord.end()); // thanks stack overflow
         }
-        transform(inWord.begin(), inWord.end(), inWord.begin(), ::tolower);
+        transform(inWord.begin(), inWord.end(), inWord.begin(), ::tolower); // thanks stack overflow
         bool exists = inDick.find(inWord)!=inDick.end();
-        if (exists) {}
-        else
+        if (exists) {goodwordcount++;}
+        else{
             cout << "Misspelled Word Detected = " << inWord << "\n";
+        badwordcount++;
+        }
     }
+    cout << "\n" << badwordcount << " misspelled words detected.\n";
+    cout <<  goodwordcount << " correctly spelled words detected.\n";
+    cout << badwordcount + goodwordcount << " words checked for proper spelling.\n";
+
 }
 
 Dictionary LoadFile(Dictionary inDick)
@@ -67,7 +75,6 @@ Dictionary LoadFile(Dictionary inDick)
         while (getline(dictionaryfile, word))
         {
             inDick.insert(word);
-            //cout << word << "\n";
         }
         dictionaryfile.close();
         return inDick;
